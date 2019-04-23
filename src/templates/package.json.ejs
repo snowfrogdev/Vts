@@ -1,0 +1,25 @@
+{
+    "name": "<%= props.name %>",
+    "version": "0.0.1",
+    "main": "dist/<%= props.name %>.cjs.js",
+    "module": "dist/<%= props.name %>.esm.js",
+    "browser": "dist/<%= props.name %>.umd.js",
+    "devDependencies": {
+        "rollup": "^1.0.0",
+        "rollup-plugin-commonjs": "^9.2.0",
+        "rollup-plugin-node-resolve": "^4.0.0",
+        "rollup-plugin-typescript": "^1.0.0",
+        "ts-node": "^7.0.1",
+        "tslib": "^1.9.3",
+        "typescript": "^3.2.2"
+    },
+    "scripts": {
+        "build": "rollup -c",
+        "dev": "rollup -c -w",
+        "test": "ts-node test/test.ts",
+        "pretest": "npm run build"
+    },
+    "files": [
+        "dist"
+    ]
+}
