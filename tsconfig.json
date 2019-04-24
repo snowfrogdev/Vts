@@ -21,6 +21,6 @@
     "strict": false,
     "target": "es5"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/commands/vts.ts"],
   "exclude": ["node_modules"]
 }
