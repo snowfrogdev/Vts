@@ -13,7 +13,7 @@
     "format": "prettier --write **/*.{js,ts,tsx,json}",
     "lint": "tslint -p .",
     "compile": "tsc -p .",
-    "build": "yarn format && yarn lint && yarn compile",
+    "build": "npm run format && npm run lint && npm run compile",
     "test": "jest",
     "watch": "jest --watch",
     "snapupdate": "jest --updateSnapshot",
