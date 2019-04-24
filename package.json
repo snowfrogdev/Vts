@@ -1,11 +1,14 @@
 {
-  "name": "vts",
-  "version": "0.0.1",
-  "description": "vts CLI",
+  "name": "vts-cli",
+  "version": "1.0.0",
+  "description": "Vts CLI",
   "private": true,
   "bin": {
     "vts": "bin/vts"
   },
+  "author": "Philippe Vaillancourt <phil@snowfrog.dev> (https://blog.snowfrog.dev)",
+  "bugs": "https://github.com/snowfrogdev/Vts/issues",
+  "repository": "github:snowfrogdev/Vts",
   "scripts": {
     "format": "prettier --write **/*.{js,ts,tsx,json}",
     "lint": "tslint -p .",
