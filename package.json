@@ -2,7 +2,7 @@
   "name": "vts-cli",
   "version": "1.0.0",
   "description": "Vts CLI",
-  "private": true,
+  "private": false,
   "bin": {
     "vts": "bin/vts"
   },
