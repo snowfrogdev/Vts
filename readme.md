@@ -9,7 +9,7 @@ If you're here, you probably already have [Node](https://nodejs.org/en/). If you
 then...
 
 ```bash
-npm i -g vts
+npm i -g vts-cli
 ```
 
 ## vts CLI command
