@@ -6,12 +6,15 @@ module.exports = {
     run: async (toolbox: GluegunToolbox) => {
         const {
             parameters,
+            prompt,
             template: { generate },
-            print: { info },
+            print: { info, spin, colors },
             filesystem,
             system,
         } = toolbox
         const name = parameters.first
+
+        const spinner = spin('Generating files and installing dependencies')
 
         await generate({
             template: 'package.json.ejs',
@@ -30,16 +33,29 @@ module.exports = {
             target: `${name}/tsconfig.json`
         })
 
-        await generate({
-            template: '.gitignore.ejs',
-            target: `${name}/.gitignore`
-        })
-
         await filesystem.appendAsync(`${name}/src/main.ts`, '')
 
-        await system.run(`cd ${name} && npm install && git init && git add . && git commit -m "initial commit"`)
+        await system.run(`cd ${name} && npm install`)
 
+        spinner.stop()
 
-        info(`Generated new Vanilla TypeScript project ${name}`)
+        const initGitRepo = await prompt.confirm('Do you want to initialize a Git repository?')
+
+        if (initGitRepo) {
+            await generate({
+                template: '.gitignore.ejs',
+                target: `${name}/.gitignore`
+            })
+
+            await system.run(`cd ${name} && git init && git add . && git commit -m "initial commit"`)
+        }
+
+        info(colors.success(`
+        Generated new Vanilla TypeScript project ${name}.
+
+        Next:
+          $ cd ${name}
+          $ npm run dev
+        `))
     }
 }
