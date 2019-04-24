@@ -1,25 +1,27 @@
-# vts CLI
+# Vts CLI
 
-A CLI for vts.
+Vts stands for Vanilla Typescript Starter. When said quickly, it also sounds like the french word `vitesse` which means speed. Vts CLI does one thing, and one thing only, but does it well and quickly; it sets up a new vanilla Typescript project with all the needed dependencies and configurations.
 
-## Customizing your CLI
+## Install
 
-Check out the documentation at https://github.com/infinitered/gluegun/tree/master/docs.
+If you're here, you probably already have [Node](https://nodejs.org/en/). If you don't, download and install it.
 
-## Publishing to NPM
+then...
 
-To package your CLI up for NPM, do this:
-
-```shell
-$ npm login
-$ npm whoami
-$ npm lint
-$ npm test
-(if typescript, run `npm run build` here)
-$ npm publish
+```bash
+npm i -g vts
 ```
 
-# License
+## vts CLI command
 
-MIT - see LICENSE
+Vts only has one command:
 
+### New
+
+```bash
+vts new {Project name}
+```
+
+Generate a new Typescript project with Vts CLI. When you execute this command, Vts CLI will give you a series of options for your new project regarding *what asset bundler you would like to use (comming soon)* and weather or not to initialize a git repo.
+
+The `new` command will create a new subdirectory with your `project name` from whatever directory you execute the command.
