@@ -14,26 +14,62 @@ module.exports = {
     } = toolbox
     const name = parameters.first
 
+    const typeOfProject = await prompt.ask({
+      type: 'checkbox',
+      name: 'response',
+      message: 'What type of project is this? - select using the SPACEBAR, hit ENTER when ready.',
+      choices: ['Web', 'Library']
+    })
+
     const spinner = spin('Generating files and installing dependencies')
 
-    await generate({
-      template: 'package.json.ejs',
-      target: `${name}/package.json`,
-      props: { name }
-    })
+    if (typeOfProject.response === 'Library') {
+      // Library project
+      await generate({
+        template: 'library/package.json.ejs',
+        target: `${name}/package.json`,
+        props: { name }
+      })
 
-    await generate({
-      template: 'rollup.config.js.ejs',
-      target: `${name}/rollup.config.js`,
-      props: { name }
-    })
+      await generate({
+        template: 'library/rollup.config.js.ejs',
+        target: `${name}/rollup.config.js`,
+        props: { name }
+      })
 
+      await filesystem.appendAsync(`${name}/src/main.ts`, '')
+    } else {
+      // Web project
+      await generate({
+        template: 'web/package.json.ejs',
+        target: `${name}/package.json`,
+        props: { name }
+      })
+
+      await generate({
+        template: 'web/index.html.ejs',
+        target: `${name}/src/index.html`,
+        props: { name }
+      })
+
+      await generate({
+        template: 'web/index.ts.ejs',
+        target: `${name}/src/index.ts`,
+        props: { name }
+      })   
+      
+      await generate({
+        template: 'web/style.css.ejs',
+        target: `${name}/src/style.css`,
+        props: { name }
+      })
+    }
+
+    // Common
     await generate({
-      template: 'tsconfig.json.ejs',
+      template: 'common/tsconfig.json.ejs',
       target: `${name}/tsconfig.json`
     })
-
-    await filesystem.appendAsync(`${name}/src/main.ts`, '')
 
     await system.run(`cd ${name} && npm install`)
 
@@ -45,7 +81,7 @@ module.exports = {
 
     if (initGitRepo) {
       await generate({
-        template: '.gitignore.ejs',
+        template: 'common/.gitignore.ejs',
         target: `${name}/.gitignore`
       })
 

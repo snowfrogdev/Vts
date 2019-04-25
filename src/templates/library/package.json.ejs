@@ -1,6 +1,6 @@
 {
     "name": "<%= props.name %>",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "main": "dist/<%= props.name %>.cjs.js",
     "module": "dist/<%= props.name %>.esm.js",
     "browser": "dist/<%= props.name %>.umd.js",
@@ -15,9 +15,7 @@
     },
     "scripts": {
         "build": "rollup -c",
-        "dev": "rollup -c -w",
-        "test": "ts-node test/test.ts",
-        "pretest": "npm run build"
+        "dev": "rollup -c -w"
     },
     "files": [
         "dist"
