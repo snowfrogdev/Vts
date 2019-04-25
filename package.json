@@ -1,8 +1,15 @@
 {
   "name": "vts-cli",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Vts CLI",
-  "keywords": ["CLI", "TypeScript", "Vts", "vts-CLI", "library starter", "boilerplate"],
+  "keywords": [
+    "CLI",
+    "TypeScript",
+    "Vts",
+    "vts-CLI",
+    "library starter",
+    "boilerplate"
+  ],
   "private": false,
   "bin": {
     "vts": "bin/vts"

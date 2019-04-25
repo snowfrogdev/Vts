@@ -17,7 +17,8 @@ module.exports = {
     const typeOfProject = await prompt.ask({
       type: 'checkbox',
       name: 'response',
-      message: 'What type of project is this? - select using the SPACEBAR, hit ENTER when ready.',
+      message:
+        'What type of project is this? - select using the SPACEBAR, hit ENTER when ready.',
       choices: ['Web', 'Library']
     })
 
@@ -56,8 +57,8 @@ module.exports = {
         template: 'web/index.ts.ejs',
         target: `${name}/src/index.ts`,
         props: { name }
-      })   
-      
+      })
+
       await generate({
         template: 'web/style.css.ejs',
         target: `${name}/src/style.css`,
