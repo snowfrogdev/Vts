@@ -8,23 +8,31 @@ module.exports = {
       parameters,
       prompt,
       template: { generate },
-      print: { info, spin, colors },
+      print: { success, spin },
       filesystem,
       system
     } = toolbox
     const name = parameters.first
 
-    const typeOfProject = await prompt.ask({
-      type: 'checkbox',
-      name: 'response',
+    const askTypeOfProject = {
+      type: 'list',
+      name: 'typeOfProject',
       message:
-        'What type of project is this? - select using the SPACEBAR, hit ENTER when ready.',
+        'What type of project is this?',
       choices: ['Web', 'Library']
-    })
+    }
+
+    const askInitGitRepo = {
+      type: 'confirm',
+      name: 'initGitRepo',
+      message:
+        'Do you want to initialize a Git repository?'
+    }
+
+    const { typeOfProject, initGitRepo } = await prompt.ask([askTypeOfProject, askInitGitRepo])
 
     const spinner = spin('Generating files and installing dependencies')
-
-    if (typeOfProject.response === 'Library') {
+    if (typeOfProject === 'Library') {
       // Library project
       await generate({
         template: 'library/package.json.ejs',
@@ -74,12 +82,6 @@ module.exports = {
 
     await system.run(`cd ${name} && npm install`)
 
-    spinner.stop()
-
-    const initGitRepo = await prompt.confirm(
-      'Do you want to initialize a Git repository?'
-    )
-
     if (initGitRepo) {
       await generate({
         template: 'common/.gitignore.ejs',
@@ -91,14 +93,14 @@ module.exports = {
       )
     }
 
-    info(
-      colors.success(`
-        Generated new Vanilla TypeScript project ${name}.
+    spinner.stop()
+
+    success(`
+        Done! Generated new Vanilla TypeScript project ${name}.
 
         Next:
           $ cd ${name}
           $ npm run dev
-        `)
-    )
+    `)
   }
 }
