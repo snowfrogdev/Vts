@@ -1,4 +1,14 @@
 import { GluegunToolbox } from 'gluegun'
+import { LibraryHandler } from '../handlers/library-handler';
+import { WebHandler } from '../handlers/web-handler';
+import { CommonHandler } from '../handlers/common-handler';
+import { GitHandler } from '../handlers/git-handler';
+
+export interface NewCommandRequest {
+  name: string
+  typeOfProject: string
+  initializeGitRepo: string
+}
 
 module.exports = {
   name: 'new',
@@ -7,12 +17,21 @@ module.exports = {
     const {
       parameters,
       prompt,
-      template: { generate },
       print: { success, spin },
-      filesystem,
-      system
     } = toolbox
+
     const name = parameters.first
+
+    const libraryHandler = new LibraryHandler(toolbox)
+    const webHandler = new WebHandler(toolbox)
+    const commonHandler = new CommonHandler(toolbox)
+    const gitHandler = new GitHandler(toolbox)
+
+    libraryHandler
+      .setNext(webHandler)
+      .setNext(commonHandler)
+      .setNext(gitHandler)
+
 
     const askTypeOfProject = {
       type: 'list',
@@ -22,77 +41,21 @@ module.exports = {
       choices: ['Web', 'Library']
     }
 
-    const askInitGitRepo = {
+    const askInitializeGitRepo = {
       type: 'confirm',
-      name: 'initGitRepo',
+      name: 'initializeGitRepo',
       message:
         'Do you want to initialize a Git repository?'
     }
 
-    const { typeOfProject, initGitRepo } = await prompt.ask([askTypeOfProject, askInitGitRepo])
+    const { typeOfProject, initializeGitRepo } = await prompt.ask([askTypeOfProject, askInitializeGitRepo])
 
-    const spinner = spin('Generating files and installing dependencies')
-    if (typeOfProject === 'Library') {
-      // Library project
-      await generate({
-        template: 'library/package.json.ejs',
-        target: `${name}/package.json`,
-        props: { name }
-      })
+    const request: NewCommandRequest = { name, typeOfProject, initializeGitRepo }
 
-      await generate({
-        template: 'library/rollup.config.js.ejs',
-        target: `${name}/rollup.config.js`,
-        props: { name }
-      })
+    const spinner = spin('Generating files and installing dependencies')    
 
-      await filesystem.appendAsync(`${name}/src/main.ts`, '')
-    } else {
-      // Web project
-      await generate({
-        template: 'web/package.json.ejs',
-        target: `${name}/package.json`,
-        props: { name }
-      })
-
-      await generate({
-        template: 'web/index.html.ejs',
-        target: `${name}/src/index.html`,
-        props: { name }
-      })
-
-      await generate({
-        template: 'web/index.ts.ejs',
-        target: `${name}/src/index.ts`,
-        props: { name }
-      })
-
-      await generate({
-        template: 'web/style.css.ejs',
-        target: `${name}/src/style.css`,
-        props: { name }
-      })
-    }
-
-    // Common
-    await generate({
-      template: 'common/tsconfig.json.ejs',
-      target: `${name}/tsconfig.json`
-    })
-
-    await system.run(`cd ${name} && npm install`)
-
-    if (initGitRepo) {
-      await generate({
-        template: 'common/.gitignore.ejs',
-        target: `${name}/.gitignore`
-      })
-
-      await system.run(
-        `cd ${name} && git init && git add . && git commit -m "initial commit"`
-      )
-    }
-
+    await libraryHandler.handle(request)    
+    
     spinner.stop()
 
     success(`

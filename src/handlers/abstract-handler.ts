@@ -1,10 +1,12 @@
-interface Handler {
+import { NewCommandRequest } from "../commands/new";
+
+export interface Handler {
     setNext(handler: Handler): Handler;
 
-    handle(request: string): void;
+    handle(request: NewCommandRequest): void;
 }
 
-abstract class AbstractHandler implements Handler {
+export abstract class AbstractHandler implements Handler {
     private nextHandler: Handler;
 
     public setNext(handler: Handler): Handler {
@@ -12,7 +14,7 @@ abstract class AbstractHandler implements Handler {
         return handler;
     }
 
-    public handle(request: string) {
+    public handle(request: NewCommandRequest) {
         if (this.nextHandler) {
             return this.nextHandler.handle(request);
         }
