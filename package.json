@@ -21,7 +21,7 @@
     "format": "prettier --write **/*.{js,ts,tsx,json}",
     "lint": "tslint -p .",
     "compile": "tsc -p .",
-    "build": "yarn format && yarn lint && yarn compile",
+    "build": "yarn format && yarn lint && yarn compile && cp -a ./src/templates ./build/",
     "test": "jest",
     "watch": "jest --watch",
     "snapupdate": "jest --updateSnapshot",
