@@ -20,8 +20,10 @@
   "scripts": {
     "format": "prettier --write **/*.{js,ts,tsx,json}",
     "lint": "tslint -p .",
+    "clean-build": "rm -rf ./build",
     "compile": "tsc -p .",
-    "build": "yarn format && yarn lint && yarn compile && cp -a ./src/templates ./build/",
+    "copy-templates": "if [ -e ./src/templates ]; then cp -a ./src/templates ./build/; fi",
+    "build": "yarn format && yarn lint && yarn clean-build && yarn compile && yarn copy-templates",
     "test": "jest",
     "watch": "jest --watch",
     "snapupdate": "jest --updateSnapshot",
