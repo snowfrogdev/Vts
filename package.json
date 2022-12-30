@@ -52,7 +52,7 @@
     "tslint-config-prettier": "^1.17.0",
     "tslint-config-standard": "^8.0.1",
     "prettier": "^1.12.1",
-    "jest": "^23.6.0"
+    "jest": "^29.3.1"
   },
   "jest": {
     "preset": "ts-jest",
